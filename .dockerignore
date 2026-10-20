@@ -6,6 +6,10 @@
 .ruff_cache
 .coverage
 htmlcov
+evidencias
+frontend/node_modules
+frontend/dist
+*.zip
 .env
 .env.*
 **/*.db

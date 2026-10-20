@@ -1,0 +1,16 @@
+﻿{
+    "checked_at":  "2026-10-18T04:43:00-03:00",
+    "urls":  [
+                 {
+                     "url":  "https://finchat-cp3.onrender.com",
+                     "status":  404,
+                     "result":  "O servidor remoto retornou um erro: (404) Não Localizado."
+                 },
+                 {
+                     "url":  "https://finchat-cp3-api.onrender.com/health",
+                     "status":  404,
+                     "result":  "O servidor remoto retornou um erro: (404) Não Localizado."
+                 }
+             ],
+    "conclusion":  "Nenhuma URL pública verificada nesta execução; publicação depende do código CP3 disponível ao Render e autorização da conta."
+}

@@ -4,7 +4,7 @@ services:
   api:
     build:
       context: .
-    image: finchat-api:cp2
+    image: finchat-api:cp3
     environment:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-${SECRET_KEY:-}}
       JWT_ALGORITHM: ${JWT_ALGORITHM:-HS256}
@@ -14,6 +14,8 @@ services:
       OLLAMA_BASE_URL: http://ollama:11434
       OLLAMA_MODEL: ${OLLAMA_MODEL:-gemma3:1b}
       OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-300}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-false}
+      PORT: 8000
       # SQLite SQL persistido no volume, independente do arquivo local.
       DATABASE_URL: sqlite:////app/data/finchat.db
       TZ: America/Sao_Paulo
@@ -26,6 +28,26 @@ services:
         condition: service_completed_successfully
     restart: unless-stopped
     stop_grace_period: 15s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: /api/v1
+        VITE_AI_REQUEST_TIMEOUT_MS: ${VITE_AI_REQUEST_TIMEOUT_MS:-310000}
+    image: finchat-frontend:cp3
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-5173}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
 
   ollama:
     image: ollama/ollama:latest

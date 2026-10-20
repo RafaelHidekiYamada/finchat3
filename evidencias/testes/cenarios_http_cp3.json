@@ -1,0 +1,41 @@
+﻿{
+  "executed_at": "2026-10-18T04:39:17.432692-03:00",
+  "base_url": "http://127.0.0.1:5173/api/v1",
+  "scenarios": [
+    {
+      "id": "CT-01",
+      "status": "APROVADO",
+      "resultado": "Frontend Nginx encaminhou a chamada e a API/banco responderam CP3/ok."
+    },
+    {
+      "id": "CT-02",
+      "status": "APROVADO",
+      "resultado": "Transação criada, persistida, consultada e refletida no dashboard consolidado."
+    },
+    {
+      "id": "CT-03",
+      "status": "APROVADO",
+      "resultado": "Valor monetário inválido recusado com 422 e erro padronizado."
+    },
+    {
+      "id": "CT-04",
+      "status": "APROVADO",
+      "resultado": "Perfil CPF bloqueado na área empresarial com 403."
+    },
+    {
+      "id": "CT-05",
+      "status": "APROVADO",
+      "resultado": "Perfil CNPJ recuperou 2 parceiros e 2 contratos."
+    },
+    {
+      "id": "CT-06",
+      "status": "APROVADO",
+      "resultado": "Login JWT e recuperação do perfil funcionaram através do proxy do frontend."
+    },
+    {
+      "id": "CT-07",
+      "status": "APROVADO",
+      "resultado": "Ollama real respondeu com schema válido, analysis_source=ollama e fallback_used=false."
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
@@ -10,8 +10,8 @@ from app.core.config import get_settings
 
 app = FastAPI(
     title="FinChat API",
-    version="2.0.0-cp2",
-    description="FinChat CP2: API financeira para CPF e CNPJ com dashboard consolidado, paginação, frontend e análise inteligente baseada somente em agregados minimizados. Banco e WhatsApp permanecem simulados.",
+    version="3.0.0-cp3",
+    description="FinChat CP3: aplicação financeira integrada, testada, containerizada e preparada para deploy. A análise usa Ollama local quando disponível e fallback determinístico; banco e WhatsApp permanecem simulados.",
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_tags=[{"name": name, "description": description} for name, description in (
@@ -39,8 +39,18 @@ install_error_handlers(app)
 app.include_router(router)
 
 
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    return response
+
+
 @app.get("/health", tags=["Saúde"], response_model=Success[HealthRead], responses=ERROR_RESPONSES, summary="Verificar saúde da API e do banco")
 @app.get("/api/v1/health", tags=["Saúde"], response_model=Success[HealthRead], responses=ERROR_RESPONSES, summary="Verificar saúde da API e do banco")
 def health(db: Db):
     db.execute(text("SELECT 1"))
-    return {"message": "API disponível.", "data": {"status": "ok", "database": "ok", "environment": "CP2"}}
+    return {"message": "API disponível.", "data": {"status": "ok", "database": "ok", "environment": "CP3"}}

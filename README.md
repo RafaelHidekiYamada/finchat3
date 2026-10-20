@@ -1,6 +1,6 @@
-# 1. FinChat — Dashboard e Assistente Financeiro Inteligente
+# 1. FinChat CP3 — Aplicação Financeira Pronta para Validação e Deploy
 
-Projeto acadêmico: **Checkpoint 2 (CP2)**. Aplicação full stack para organizar finanças pessoais e empresariais, com backend FastAPI, frontend React, dashboard consolidado e análise educacional via Ollama local com fallback determinístico. Banco e WhatsApp continuam simulados e nenhuma credencial bancária é armazenada.
+Projeto acadêmico: **Checkpoint 3 (CP3)**. Aplicação full stack para organizar finanças pessoais e empresariais, com backend FastAPI, frontend React, dashboard consolidado, análise via Ollama local com fallback determinístico, ambiente Docker completo, testes e preparação de deploy. Banco/Open Finance e WhatsApp continuam simulados e nenhuma credencial bancária é armazenada.
 
 ## 2. Descrição
 
@@ -22,7 +22,7 @@ Uma API autenticada concentra os registros e regras de negócio. O dashboard for
 
 **As conexões bancárias, consentimentos e importações são simulações. O chat não recebe nem envia mensagens reais. Não são necessárias credenciais de WhatsApp ou de bancos.**
 
-## 6. Funcionalidades do CP1 preservadas e evolução CP2
+## 6. Funcionalidades preservadas e evolução CP3
 
 - Cadastro CPF/CNPJ, login JWT Bearer e consulta do próprio perfil.
 - CRUD de contas, categorias e transações, com isolamento por usuário.
@@ -39,16 +39,23 @@ Uma API autenticada concentra os registros e regras de negócio. O dashboard for
 - Frontend React/TypeScript responsivo com login, cadastro, CRUDs e rotas por perfil.
 - Análise financeira estruturada via Ollama local, com minimização de dados e fallback por regras determinísticas.
 - Migration CP2 com índices compostos e integridade adicional de parceiros.
+- Frontend de produção servido por Nginx no Docker Compose e proxy interno para a API.
+- Inicialização de container com migrations, seed opcional, porta validada e healthchecks.
+- Cabeçalhos básicos de segurança na API e no frontend.
+- Cenários HTTP reais, testes CP3, evidências reproduzíveis e inspeção visual responsiva.
+- Blueprint Render para API Docker, frontend estático e PostgreSQL.
+- Documentos de diagnóstico, testes, Docker, deploy, monetização, backlog e apresentação.
 
 ## 7. Evolução e escopo futuro
 
 | Etapa | Escopo |
 | --- | --- |
 | CP1 — preservado | Backend, banco, API REST, regras, autenticação, simulações, testes e Swagger. |
-| CP2 — esta entrega | Frontend, dashboard real, API otimizada, banco revisado, testes e análise via LLM. |
-| CP3 | WhatsApp Cloud API oficial, Open Finance/sandbox com consentimento, notificações, relatórios avançados, melhorias de segurança e deploy. |
+| CP2 — preservado | Frontend, dashboard real, API otimizada, banco revisado, testes e análise via LLM local. |
+| CP3 — esta entrega | Qualidade, Docker completo, Ollama validado, segurança básica, preparação de deploy, monetização e documentação final. |
+| Futuro | Integrações oficiais com consentimento, notificações, observabilidade e operação pública contínua. |
 
-Credenciais bancárias, verificações de webhook, autorização do titular, rate limiting e requisitos de produção ficam para o CP3. A análise do CP2 não exige chave ou serviço de IA pago.
+Credenciais bancárias, verificações de webhook, autorização do titular e integrações externas reais permanecem fora do escopo. A análise do CP3 não exige chave nem serviço de IA pago. O deploy público está preparado, mas não foi executado porque esta versão ainda não deve ser enviada ao GitHub.
 
 ## 8. Regras de negócio
 
@@ -91,7 +98,9 @@ Detalhamento: [regras de negócio](docs/regras_de_negocio.md).
 | Ollama | Execução local do modelo de linguagem, sem chave paga |
 | Regras determinísticas | Fallback financeiro reproduzível e sempre disponível |
 | Vitest e Testing Library | Testes básicos do frontend |
-| Docker e Docker Compose | Execução opcional da API com SQLite em volume persistente |
+| Docker e Docker Compose | Ambiente integrado da API, frontend, Ollama e modelo |
+| Nginx sem privilégios | Servidor do frontend e proxy reverso de `/api/` |
+| Render Blueprint | Preparação de deploy da API, frontend e PostgreSQL |
 
 As dependências estão em [requirements.txt](requirements.txt). [requirements-lock.txt](requirements-lock.txt) registra as versões exatas verificadas em Python 3.11 no Windows e no container Linux. A execução local e a suíte usam SQLite; o suporte a PostgreSQL é configurável, mas não equivale a uma validação contra uma instância PostgreSQL real.
 
@@ -111,12 +120,14 @@ finchat/
 │   ├── main.py           # Aplicação FastAPI
 │   └── seed.py           # Dados fictícios idempotentes
 ├── alembic/              # Migrations
-├── docs/                 # Documentação e apresentação
-├── frontend/             # React, TypeScript, Vite, Tailwind e testes
+├── docs/                 # Documentação CP1, CP2 e CP3
+├── evidencias/           # Resultados de testes, Docker e deploy
+├── frontend/             # React, Vite, testes e Nginx de produção
 ├── tests/                # Testes automatizados
 ├── scripts/docker_start.py # Migrations e inicialização no container
 ├── Dockerfile
 ├── compose.yaml
+├── render.yaml           # Blueprint do deploy planejado
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore
@@ -124,7 +135,7 @@ finchat/
 └── README.md
 ```
 
-Fluxo: React → Axios/JWT → rota/schema → serviço → repositório/modelos → banco. O Ollama recebe somente o payload agregado pelo serviço e, se estiver indisponível, o mesmo payload é processado por regras locais. Consulte [arquitetura do CP2](docs/arquitetura_cp2.md), [otimizações](docs/otimizacoes_api_cp2.md), [revisão do banco](docs/revisao_banco_cp2.md) e [LLM](docs/llm_cp2.md).
+Fluxo local: navegador → Nginx → Axios/JWT → FastAPI → serviço → repositório/modelos → banco. O Ollama recebe somente o payload agregado; se estiver indisponível, o mesmo payload é processado por regras locais. Consulte [diagnóstico CP3](docs/CP3_DIAGNOSTICO.md), [arquitetura do CP2](docs/arquitetura_cp2.md), [otimizações](docs/otimizacoes_api_cp2.md), [revisão do banco](docs/revisao_banco_cp2.md) e [LLM](docs/llm_cp2.md).
 
 ## 11. Diagrama das entidades
 
@@ -152,8 +163,8 @@ erDiagram
 Para obter o projeto pelo GitHub:
 
 ```powershell
-git clone https://github.com/RafaelHidekiYamada/finchat2.git
-cd finchat2
+git clone https://github.com/RafaelHidekiYamada/finchat3.git
+cd finchat3
 ```
 
 O README, `app/`, `compose.yaml` e os demais arquivos ficam na raiz do repositório. Após clonar, execute os comandos nessa pasta; os caminhos absolutos `finchat` mostrados abaixo são exemplos do ambiente original. Para usar Docker, siga a opção da seção 16; para execução Python local, siga os passos a seguir.
@@ -190,6 +201,9 @@ OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=gemma3:1b
 OLLAMA_TIMEOUT_SECONDS=300
 VITE_AI_REQUEST_TIMEOUT_MS=310000
+SEED_DEMO_DATA=false
+PORT=8000
+FRONTEND_PORT=5173
 ```
 
 **A chave JWT acima é um marcador, não uma configuração utilizável.** `JWT_SECRET_KEY` é obrigatória, exige pelo menos 32 caracteres e não aceita marcadores conhecidos. `SECRET_KEY` continua aceito somente para compatibilidade com o CP1. `LLM_ENABLED=false` desativa apenas a tentativa de usar o Ollama; as regras determinísticas continuam funcionando.
@@ -275,11 +289,11 @@ npm.cmd run build
 
 Se a porta estiver ocupada, acrescente `--port 8010` ao comando e acesse `http://127.0.0.1:8010/docs`. Na verificação desta entrega, as portas 8000 e 8001 já estavam ocupadas, portanto foi usada a porta **8010**.
 
-### Executar com Docker no Windows
+### Executar o ambiente completo com Docker no Windows
 
-Esta é uma alternativa à instalação Python local: requer **Docker Desktop iniciado, usando containers Linux**, com Docker Compose. O Compose inicia a API, o Ollama e baixa o modelo configurado automaticamente; o banco continua sendo **SQLite SQL**. Não é necessário criar containers, imagens, modelos ou volumes manualmente no aplicativo.
+Esta é a forma recomendada para demonstrar o CP3: requer **Docker Desktop iniciado, usando containers Linux**, com Docker Compose. O Compose inicia frontend/Nginx, API, Ollama e baixa o modelo configurado; o banco local continua sendo **SQLite SQL** em volume persistente.
 
-Na pasta do projeto, mantenha o `.env` com `JWT_SECRET_KEY` configurado. O Compose desta entrega executa a API; rode o frontend separadamente com Vite.
+Na pasta do projeto, mantenha o `.env` com `JWT_SECRET_KEY` configurado.
 
 ```powershell
 docker run --rm python:3.11-slim-bookworm python -c "import secrets; print(secrets.token_urlsafe(48))"
@@ -290,16 +304,16 @@ Copie a saída para `JWT_SECRET_KEY` no `.env`. Depois execute:
 ```powershell
 cd "C:\caminho\para\finchat2"
 docker compose up -d --build --wait
-docker compose exec api python -m app.seed
 ```
 
-Na primeira execução, o comando também baixa o modelo `gemma3:1b`, otimizado para uso local em CPU, o que pode levar alguns minutos. Depois ele constrói a API, aplica `alembic upgrade head`, inicia Uvicorn e aguarda o healthcheck. O segundo comando popula os dados fictícios de demonstração e pode ser repetido sem duplicação.
+Na primeira execução, o comando baixa `gemma3:1b`, o que pode levar alguns minutos. Depois constrói os serviços, aplica `alembic upgrade head`, executa o seed se `SEED_DEMO_DATA=true`, inicia a API e aguarda os healthchecks.
 
+- [Aplicação no Docker](http://127.0.0.1:5173)
 - [Swagger no Docker](http://127.0.0.1:8080/docs)
 - [ReDoc no Docker](http://127.0.0.1:8080/redoc)
 - [Saúde da API no Docker](http://127.0.0.1:8080/health)
 
-Os usuários e senhas são os mesmos da seção 15. A porta padrão é **8080**, publicada somente em `127.0.0.1`. Para alterar, defina `FINCHAT_PORT=8081` no `.env`, execute `docker compose up -d` novamente e ajuste a URL. A porta interna continua 8000. O container usa o fuso `America/Sao_Paulo`, preservando as datas locais dos comandos e do seed.
+Os usuários e senhas são os mesmos da seção 15. As portas são publicadas somente em `127.0.0.1`. Para alterar, defina `FINCHAT_PORT`, `FRONTEND_PORT` ou `OLLAMA_PORT` no `.env` e recrie os serviços. Se um Ollama instalado no Windows já usar `11434`, configure `OLLAMA_PORT=11435`; a comunicação interna não muda.
 
 **Persistência:** o Compose usa `sqlite:////app/data/finchat.db` no volume `finchat_finchat_data` e armazena os modelos no volume `finchat_ollama_data`. O banco começa separado do `finchat.db` da execução Python local; reiniciar ou recriar os containers mantém registros e modelo. A variável `DATABASE_URL` do `.env` continua disponível para execução local; no Compose, o caminho SQLite é definido explicitamente.
 
@@ -308,6 +322,7 @@ Comandos de operação:
 ```powershell
 docker compose ps
 docker compose logs --tail 100 api
+docker compose logs --tail 100 frontend
 docker compose logs --tail 100 ollama
 docker compose exec api python -m pytest -q -p no:cacheprovider
 docker compose stop
@@ -316,9 +331,9 @@ docker compose start --wait
 
 Para remover somente o container e a rede, use `docker compose down`; o volume e seus dados são preservados. **`docker compose down --volumes` também remove o banco**, portanto não o use para apenas parar a aplicação.
 
-No Docker Desktop, o projeto aparece em **Containers → finchat**, com os serviços `api`, `ollama` e `ollama-model`. O aplicativo permite consultar logs e parar/iniciar os serviços; as configurações já estão no `compose.yaml`. Se ocorrer erro de conexão com `dockerDesktopLinuxEngine`, abra o Docker Desktop e aguarde o mecanismo ficar pronto. Em máquinas ainda sem WSL 2 ou virtualização configurados, siga a configuração inicial solicitada pelo próprio Docker Desktop.
+No Docker Desktop, o projeto aparece em **Containers → finchat**, com `frontend`, `api`, `ollama` e `ollama-model`. O último termina com código zero depois de preparar o modelo. Se ocorrer erro com `dockerDesktopLinuxEngine`, abra o Docker Desktop e aguarde o mecanismo ficar pronto.
 
-O processo roda como usuário sem privilégios de administrador. `.env`, banco local, logs e `.venv` ficam fora da imagem. O seed é uma ação explícita, e não é executado automaticamente a cada reinício.
+API e frontend rodam como usuários sem privilégios. `.env`, banco local, logs e `.venv` ficam fora das imagens. O seed é idempotente e controlado por `SEED_DEMO_DATA`. Consulte o [guia Docker CP3](docs/CP3_DOCKER.md).
 
 ## 17. Swagger e autenticação
 
@@ -503,11 +518,11 @@ npm.cmd test
 npm.cmd run build
 ```
 
-A suíte do backend usa banco isolado e não chama serviços externos reais: o adaptador Ollama é simulado nos testes e o fallback determinístico é exercitado diretamente. Ela cobre CP1, dashboard, paginação, índices, vencimentos, sanitização da IA e falhas controladas. A validação CP2 aprovou **93 testes de backend**. O frontend aprovou **3 testes** de proteção de rota, renderização do dashboard e navegação/logout responsivo; o build TypeScript/Vite valida a aplicação completa.
+A suíte do backend usa banco isolado; o adaptador Ollama é simulado nos testes e o fallback determinístico é exercitado diretamente. Ela cobre CP1, CP2, inicialização Docker, dashboard, paginação, índices, vencimentos, segurança e falhas controladas. A validação CP3 aprovou **96 testes de backend** localmente e dentro do container. O frontend aprovou **3 testes**; o build TypeScript/Vite também foi aprovado.
 
-Também são verificados migrations em SQLite temporário, seed idempotente, `/health`, Swagger, login, dashboard, CRUD financeiro, área CNPJ, resposta estruturada do Ollama e fallback determinístico. Consulte as evidências em `docs/evidencias/` e a [auditoria de conformidade do CP2](docs/evidencias/auditoria_cp2_2026-10-06.md).
+Também foram verificados migrations, seed, `/health`, login, dashboard, CRUD, área CNPJ, Ollama real, fallback, build e inspeção visual desktop/móvel. Consulte [testes CP3](docs/CP3_TESTES.md) e `evidencias/`.
 
-O Docker continua executando a API sem root, com migrations automáticas e SQLite em volume. O frontend é executado separadamente nesta entrega.
+O Docker executa API e frontend sem root, com migrations automáticas, seed opcional, SQLite em volume, proxy Nginx e Ollama local.
 
 ## 20. Integrantes do grupo
 
@@ -525,3 +540,45 @@ O Docker continua executando a API sem root, com migrations automáticas e SQLit
 **Link do quadro:** `https://trello.com/b/v6yK2Ik4/ruizstartup`.
 
 Sugestão de colunas e cartões do CP2: [docs/trello_notion_cp2.md](docs/trello_notion_cp2.md). Roteiro de demonstração: [docs/roteiro_apresentacao_cp2.md](docs/roteiro_apresentacao_cp2.md).
+
+## 22. Entrega CP3 e evidências
+
+| Documento | Conteúdo |
+| --- | --- |
+| [Diagnóstico](docs/CP3_DIAGNOSTICO.md) | Estado herdado, riscos e decisões |
+| [Testes](docs/CP3_TESTES.md) | Cenários, resultados e reprodução |
+| [Docker](docs/CP3_DOCKER.md) | Construção, operação e solução de problemas |
+| [Deploy](docs/CP3_DEPLOY.md) | Arquitetura Render, variáveis e estado real |
+| [Monetização](docs/CP3_MONETIZACAO.md) | Planos, custos, receita e ponto de equilíbrio |
+| [Backlog](docs/CP3_BACKLOG.md) | Situação dos itens e relação com o Trello |
+| [Apresentação](docs/CP3_APRESENTACAO.md) | Roteiro de 7–8 minutos |
+| [Checklist](docs/CP3_CHECKLIST.md) | Concluído, parcial e pendente |
+
+As evidências ficam em `evidencias/testes/`, `evidencias/docker/` e `evidencias/deploy/`. Elas não contêm `.env`, JWTs ou chaves privadas.
+
+## 23. Estado do deploy
+
+O arquivo `render.yaml` prepara API Docker, frontend estático e PostgreSQL no Render. **A aplicação ainda não está publicada:** a versão CP3 permanece local por solicitação de não enviar nada ao GitHub. As URLs previstas retornaram `404` e não são apresentadas como deploy concluído.
+
+Quando houver autorização, o procedimento está em [CP3_DEPLOY.md](docs/CP3_DEPLOY.md). O ambiente público inicial usa análise determinística; Ollama permanece na execução Docker local.
+
+## 24. Monetização resumida
+
+A hipótese utiliza planos Gratuito, Pessoal (R$ 19,90/mês) e Negócio (R$ 59,90/mês). Em um cenário acadêmico de 180 assinantes pagantes, a receita recorrente estimada é R$ 4.782,00/mês, com ponto de equilíbrio aproximado em 78 clientes. Custos e preços são hipóteses, não cotações. Veja os cálculos e exclusões em [CP3_MONETIZACAO.md](docs/CP3_MONETIZACAO.md).
+
+## 25. Apresentação e entrega
+
+- Roteiro: [CP3_APRESENTACAO.md](docs/CP3_APRESENTACAO.md)
+- Vídeo: **pendente de gravação pela equipe**
+- Trello: <https://trello.com/b/v6yK2Ik4/ruizstartup>
+- Repositório: <https://github.com/RafaelHidekiYamada/finchat3>
+- Pacote local: `CP3_FINCHAT_GRUPO_PROVISORIO.zip`
+
+## 26. Limitações conhecidas
+
+- Open Finance e WhatsApp são simulações; não há consentimento ou mensagem real.
+- O deploy público está configurado, mas ainda não foi executado ou validado.
+- O plano gratuito de hospedagem não representa disponibilidade de produção.
+- Ollama exige recursos locais e pode demorar no primeiro carregamento.
+- O fallback oferece orientação educacional, não aconselhamento financeiro profissional.
+- PostgreSQL está configurado para deploy, enquanto a validação local principal usa SQLite.

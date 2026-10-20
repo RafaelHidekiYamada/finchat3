@@ -1,0 +1,34 @@
+DATA: 2026-10-18
+docker compose config --quiet: APROVADO
+docker compose up -d --build --wait: APROVADO
+
+SERVICOS:
+- api | finchat-api:cp3 | healthy | 127.0.0.1:8080->8000
+- frontend | finchat-frontend:cp3 | healthy | 127.0.0.1:5173->8080
+- ollama | ollama/ollama:latest | healthy | 127.0.0.1:11435->11434
+- ollama-model | concluido | exit code 0
+
+PROCESSOS SEM ROOT:
+- API: uid=10001(finchat) gid=10001(finchat)
+- frontend: uid=101(nginx) gid=101(nginx)
+
+HEALTH:
+- direto API: status=ok, database=ok, environment=CP3
+- proxy frontend: status=ok, database=ok, environment=CP3
+- raiz frontend: HTTP 200
+
+CABECALHOS:
+- API: X-Content-Type-Options=nosniff, X-Frame-Options=DENY
+- frontend: X-Content-Type-Options=nosniff, X-Frame-Options=DENY
+
+IMAGENS:
+- finchat-api:cp3 | usuario finchat | aproximadamente 75 MB
+- finchat-frontend:cp3 | usuario 101 | aproximadamente 21 MB
+
+VOLUMES PRESERVADOS:
+- finchat_finchat_data
+- finchat_ollama_data
+
+MIGRATIONS:
+- revisao atual: 0002_cp2_indexes_integrity (head)
+- alembic check: No new upgrade operations detected.

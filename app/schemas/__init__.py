@@ -299,7 +299,7 @@ class ChatRead(Schema):
 class HealthRead(Schema):
     status: Literal["ok"]
     database: Literal["ok"]
-    environment: Literal["CP2"]
+    environment: Literal["CP3"]
 
 
 class MonthlyFlow(Schema):
