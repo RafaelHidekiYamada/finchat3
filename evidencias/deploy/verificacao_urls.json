@@ -1,16 +1,21 @@
-﻿{
-    "checked_at":  "2026-10-18T04:43:00-03:00",
-    "urls":  [
-                 {
-                     "url":  "https://finchat-cp3.onrender.com",
-                     "status":  404,
-                     "result":  "O servidor remoto retornou um erro: (404) Não Localizado."
-                 },
-                 {
-                     "url":  "https://finchat-cp3-api.onrender.com/health",
-                     "status":  404,
-                     "result":  "O servidor remoto retornou um erro: (404) Não Localizado."
-                 }
-             ],
-    "conclusion":  "Nenhuma URL pública verificada nesta execução; publicação depende do código CP3 disponível ao Render e autorização da conta."
+{
+  "checked_at": "2026-10-20T18:45:33-03:00",
+  "urls": [
+    {
+      "url": "https://finchat-cp3.onrender.com",
+      "status": 200,
+      "result": "Frontend React publicado e tela de login renderizada."
+    },
+    {
+      "url": "https://finchat-cp3-api.onrender.com/health",
+      "status": 200,
+      "result": "API respondeu status=ok, database=ok e environment=CP3."
+    }
+  ],
+  "blueprint": "finchat-cp3",
+  "services": {
+    "finchat-cp3-api": "Deployed",
+    "finchat-cp3": "Deployed"
+  },
+  "conclusion": "Deploy público concluído e URLs verificadas."
 }

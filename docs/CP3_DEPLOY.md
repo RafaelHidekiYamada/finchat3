@@ -1,57 +1,64 @@
-# CP3 — Plano de deploy público
+# CP3 — Deploy público no Render
 
-## Plataforma escolhida
+## Estado comprovado em 20/10/2026
 
-O projeto foi preparado para o Render por meio de `render.yaml`:
+- Aplicação: <https://finchat-cp3.onrender.com>
+- API: <https://finchat-cp3-api.onrender.com>
+- Health check: <https://finchat-cp3-api.onrender.com/health>
+- Repositório: <https://github.com/RafaelHidekiYamada/finchat3>
+- Blueprint: `finchat-cp3`
+- Serviços: `finchat-cp3-api` e `finchat-cp3`, ambos com estado `Deployed`.
 
-- API FastAPI como Web Service Docker;
-- frontend React como Static Site;
-- PostgreSQL gerenciado;
-- migrations e seed executados pelo processo de inicialização da API;
-- análise determinística habilitada mesmo sem Ollama.
+O fluxo público foi validado de forma visual e por HTTP: health, login CPF, recuperação do perfil, dashboard, criação/leitura/exclusão de transação temporária, rejeição de entrada inválida, bloqueio CPF na área CNPJ, consultas CNPJ e análise determinística.
 
-O Blueprint segue a especificação oficial do [Render](https://render.com/docs/blueprint-spec). A plataforma também documenta o fluxo de [primeiro deploy](https://render.com/docs/your-first-deploy), [serviços Docker](https://render.com/docs/docker) e [infraestrutura como código](https://render.com/docs/infrastructure-as-code).
+## Arquitetura publicada
 
-## Estado real em 18/10/2026
+- API FastAPI como Web Service Docker gratuito.
+- Frontend React/Vite como Static Site global.
+- SQLite efêmero em `/tmp/finchat.db` para a demonstração acadêmica.
+- Migrations e seed idempotente executados na inicialização da API.
+- `LLM_ENABLED=false`: análise pública por regras determinísticas.
+- Ollama completo disponível no ambiente Docker local.
 
-**Deploy público não executado e URL pública não validada.** As URLs previstas no arquivo de configuração retornaram `404` durante a verificação, conforme `evidencias/deploy/verificacao_urls.json`.
+O Blueprint segue a especificação oficial do [Render](https://render.com/docs/blueprint-spec), usando [serviço Docker](https://render.com/docs/docker) e [Static Site](https://render.com/docs/static-sites).
 
-O código CP3 está somente no computador local porque foi solicitado explicitamente que nada fosse enviado ao GitHub ainda. O Render não consegue construir esta versão sem que ela esteja em um repositório acessível ou seja enviada por outro mecanismo autorizado. Portanto, o projeto está preparado para deploy, mas não é correto declará-lo publicado.
+## Ajuste necessário durante a publicação
 
-## Variáveis do serviço da API
+A primeira sincronização tentou criar `finchat-cp3-db`, mas o workspace já possuía o máximo de um PostgreSQL gratuito ativo. O Render recusou o banco e cancelou a criação inicial da API. Nenhum plano pago foi contratado.
 
-| Variável | Configuração no Blueprint |
+O `render.yaml` foi corrigido para usar `sqlite:////tmp/finchat.db`, a alteração foi enviada ao GitHub e o Blueprint sincronizado novamente. API e frontend foram implantados com sucesso. Como o filesystem gratuito é efêmero, os dados podem ser recriados após reinício; `SEED_DEMO_DATA=true` garante os usuários e registros fictícios da apresentação.
+
+## Variáveis da API
+
+| Variável | Valor/origem |
 | --- | --- |
-| `JWT_SECRET_KEY` | Gerada pelo Render |
+| `JWT_SECRET_KEY` | Gerada de forma segura pelo Render |
 | `JWT_ALGORITHM` | `HS256` |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | `60` |
-| `DATABASE_URL` | Injetada pelo PostgreSQL do Blueprint |
-| `CORS_ORIGINS` | URL HTTPS do frontend |
-| `LLM_ENABLED` | `false` no plano público inicial |
-| `SEED_DEMO_DATA` | `true` para avaliação acadêmica |
+| `DATABASE_URL` | `sqlite:////tmp/finchat.db` |
+| `CORS_ORIGINS` | `https://finchat-cp3.onrender.com` |
+| `LLM_ENABLED` | `false` |
+| `SEED_DEMO_DATA` | `true` |
 
-No frontend, `VITE_API_BASE_URL` aponta para a URL HTTPS da API. Se o Render atribuir sufixos diferentes, as duas URLs devem ser ajustadas antes do build definitivo.
+O frontend é construído com `VITE_API_BASE_URL=https://finchat-cp3-api.onrender.com/api/v1`.
 
-## Por que o Ollama não está no deploy gratuito
+## Publicação e atualização
 
-O Ollama permanece disponível no Docker local. No ambiente público inicial, `LLM_ENABLED=false` mantém a análise por regras determinísticas, evitando depender de GPU, memória adicional ou uma API paga. A interface e o contrato da API continuam funcionais e informam a origem da análise.
+1. Enviar alterações para a branch `main` de `RafaelHidekiYamada/finchat3`.
+2. O Blueprint sincroniza o `render.yaml` automaticamente.
+3. Aguardar o build e o health check da API.
+4. Validar `GET /health` e o login no frontend.
+5. Em caso de falha, consultar os logs do serviço e o histórico de Syncs do Blueprint.
 
-## Passos para publicar depois da autorização
+## Credenciais fictícias de demonstração
 
-1. Revisar o diff e enviar a versão CP3 para uma branch do repositório.
-2. No Render, criar um Blueprint apontando para `RafaelHidekiYamada/finchat3`.
-3. Confirmar os três recursos definidos em `render.yaml`.
-4. Aguardar o build, migrations, seed e healthcheck.
-5. Substituir no Blueprint quaisquer URLs atribuídas com nomes diferentes.
-6. Validar `/health`, login CPF/CNPJ, dashboard, transação e análise determinística.
-7. Registrar URLs e capturas reais em `evidencias/deploy/` e atualizar README/checklist.
+| Perfil | E-mail | Senha |
+| --- | --- | --- |
+| CPF | `cpf@finchat.demo` | `FinChatDemo!2026` |
+| CNPJ | `empresa@finchat.demo` | `FinChatDemo!2026` |
 
-## Atualização e rollback
+## Limitações
 
-Com `autoDeployTrigger: commit`, novos commits no branch conectado iniciam novo build. Antes de atualizar produção, execute as suítes local e Docker. Em falha, use o rollback do serviço no painel e investigue os logs; mudanças de banco devem permanecer compatíveis com as migrations Alembic.
+Segundo a documentação de [instâncias gratuitas](https://render.com/docs/free), o Web Service pode adormecer após inatividade e o filesystem é efêmero. A primeira requisição após suspensão pode demorar. Esta arquitetura atende à demonstração acadêmica, mas uma operação comercial precisa de PostgreSQL persistente, observabilidade, backups e plano de disponibilidade.
 
-## Limitações do plano gratuito
-
-Segundo a documentação de [instâncias gratuitas](https://render.com/docs/free), Web Services gratuitos podem adormecer após inatividade, o filesystem local é efêmero e bancos PostgreSQL gratuitos têm limites e expiração. O frontend estático pode ser hospedado como [Static Site](https://render.com/docs/static-sites). Essas condições tornam o plano adequado para demonstração acadêmica, não para produção comercial contínua.
-
-Nenhuma compra, cobrança ou contratação de serviço foi realizada durante esta entrega.
+Nenhuma compra ou contratação paga foi realizada. Evidências estão em `evidencias/deploy/`.

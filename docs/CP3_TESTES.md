@@ -137,3 +137,9 @@ $env:CP3_VALIDATE_AI='true'
 ```
 
 Os avisos Pytest vêm da transição de compatibilidade entre `fastapi/starlette` e uma futura versão do `httpx`; não causaram falha funcional e estão registrados integralmente nos logs.
+
+## Validação pública — 20/10/2026
+
+O mesmo fluxo HTTP foi executado contra `https://finchat-cp3-api.onrender.com/api/v1`. CT-01 a CT-06 foram aprovados, incluindo criação e limpeza de uma transação temporária. A análise pública retornou origem `deterministic`, resumo financeiro e duas recomendações. Em navegador controlável, o login CPF e o dashboard foram exibidos corretamente em `https://finchat-cp3.onrender.com`.
+
+Evidências: `evidencias/deploy/verificacao_urls.json` e `evidencias/deploy/validacao_publica.json`.

@@ -1,6 +1,6 @@
 # CP3 — Checklist final
 
-Atualizado em 18/10/2026.
+Atualizado em 20/10/2026.
 
 | Entregável | Estado | Evidência/observação |
 | --- | --- | --- |
@@ -19,21 +19,20 @@ Atualizado em 18/10/2026.
 | Inspeção visual em navegador controlável | Concluído | Desktop e viewport móvel; captura em evidências |
 | Cabeçalhos básicos de segurança | Concluído | API e Nginx |
 | Configuração de deploy | Concluído | `render.yaml` e `docs/CP3_DEPLOY.md` |
-| Deploy público executado | **Pendente** | Não enviado ao GitHub por solicitação do usuário; URLs previstas retornam 404 |
-| Fluxo principal na URL pública | **Pendente** | Depende do deploy real |
+| Deploy público executado | Concluído | Blueprint Render aplicado; API e frontend `Deployed` |
+| Fluxo principal na URL pública | Concluído | Health, login, dashboard, CRUD temporário, autorização e análise validados |
 | Monetização | Concluído | `docs/CP3_MONETIZACAO.md` |
 | Backlog/Trello | Parcial | Quadro verificado; cartões externos não foram alterados |
 | Roteiro da apresentação | Concluído | `docs/CP3_APRESENTACAO.md` |
 | Vídeo/link da apresentação | **Pendente** | Gravação depende da equipe |
 | README atualizado | Concluído | Instruções e estado real do CP3 |
 | ZIP sanitizado | Concluído após empacotamento | `CP3_FINCHAT_GRUPO_PROVISORIO.zip` |
-| Envio ao GitHub | **Pendente intencionalmente** | Nenhum push desta finalização |
+| Envio ao GitHub | Concluído | `RafaelHidekiYamada/finchat3`, branch `main` |
 
 ## Pendências que exigem ação externa
 
-1. Autorizar e realizar o envio da versão CP3 ao repositório.
-2. Criar/aplicar o Blueprint no Render e validar as URLs reais.
-3. Gravar a apresentação e adicionar o link ao README.
-4. Se desejado, transportar o backlog local para o Trello.
+1. Gravar a apresentação e adicionar o link ao README.
+2. Se desejado, transportar o backlog local para o Trello.
+3. Para uso além da demonstração, contratar ou liberar um banco persistente e alterar `DATABASE_URL`.
 
 Essas pendências não são apresentadas como concluídas e não invalidam a execução local verificada.

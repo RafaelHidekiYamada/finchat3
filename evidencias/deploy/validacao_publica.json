@@ -1,0 +1,45 @@
+{
+  "executed_at": "2026-10-20T18:45:33-03:00",
+  "base_url": "https://finchat-cp3-api.onrender.com/api/v1",
+  "scenarios": [
+    {
+      "id": "CT-01",
+      "status": "APROVADO",
+      "resultado": "API e banco efêmero responderam CP3/ok."
+    },
+    {
+      "id": "CT-02",
+      "status": "APROVADO",
+      "resultado": "Transação temporária criada, persistida, consultada, refletida no dashboard e excluída."
+    },
+    {
+      "id": "CT-03",
+      "status": "APROVADO",
+      "resultado": "Valor monetário inválido recusado com HTTP 422."
+    },
+    {
+      "id": "CT-04",
+      "status": "APROVADO",
+      "resultado": "Perfil CPF bloqueado na área empresarial com HTTP 403."
+    },
+    {
+      "id": "CT-05",
+      "status": "APROVADO",
+      "resultado": "Perfil CNPJ recuperou parceiros e contratos do seed."
+    },
+    {
+      "id": "CT-06",
+      "status": "APROVADO",
+      "resultado": "Login JWT, recuperação do perfil e dashboard público aprovados."
+    },
+    {
+      "id": "CT-07-PUBLICO",
+      "status": "APROVADO",
+      "resultado": "Análise pública determinística retornou resumo e duas recomendações."
+    }
+  ],
+  "visual": {
+    "status": "APROVADO",
+    "resultado": "Login e dashboard conferidos em navegador controlável na URL pública."
+  }
+}

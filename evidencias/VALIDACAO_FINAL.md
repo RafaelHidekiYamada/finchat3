@@ -1,6 +1,6 @@
 # Evidência consolidada — CP3
 
-Execução final: 18/10/2026, fuso America/Sao_Paulo.
+Execução local: 18/10/2026. Deploy público: 20/10/2026. Fuso America/Sao_Paulo.
 
 | Verificação | Resultado |
 | --- | --- |
@@ -17,6 +17,10 @@ Execução final: 18/10/2026, fuso America/Sao_Paulo.
 | Cenários HTTP CT-01 a CT-07 | Todos aprovados |
 | Ollama real | `analysis_source=ollama`, `fallback_used=false` |
 | Inspeção visual | Login, dashboard desktop e viewport móvel aprovados |
+| Blueprint Render | API Docker e frontend estático `Deployed` |
+| URLs públicas | Frontend, API e health check responderam HTTP 200 |
+| Fluxo público | CT-01 a CT-06 aprovados contra a API pública |
+| Análise pública | Origem `deterministic`, resumo e recomendações presentes |
 
 Os avisos de backend vêm de aliases depreciados de `httpx`/Starlette em dependências, não de falha funcional. A suíte terminou com código 0.
 
@@ -32,5 +36,6 @@ Arquivos detalhados:
 - `docker/logs_servicos.txt`
 - `docker/validacao_compose.txt`
 - `deploy/verificacao_urls.json`
+- `deploy/validacao_publica.json`
 
 Nenhum segredo, token JWT ou arquivo `.env` foi incluído nas evidências.

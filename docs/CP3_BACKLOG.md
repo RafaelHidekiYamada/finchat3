@@ -19,8 +19,8 @@ O quadro foi consultado em modo leitura. Nenhum cartão externo foi alterado dur
 | Alta | Validar Ollama real e fallback determinístico | Grupo | Concluído | Fonte Ollama comprovada e fallback coberto |
 | Alta | Executar inspeção visual responsiva | Grupo | Concluído | Desktop e viewport móvel conferidos |
 | Alta | Preparar Blueprint Render | Grupo | Concluído | Arquivo válido e variáveis documentadas |
-| Alta | Publicar branch CP3 e executar deploy Render | Rafael/equipe | Pendente por decisão de não enviar ao GitHub | Build público saudável e URL registrada |
-| Alta | Validar fluxo principal na URL pública | Grupo | Bloqueado pelo deploy público | Login, dashboard e transação aprovados na URL |
+| Alta | Publicar branch CP3 e executar deploy Render | Rafael/equipe | Concluído | Build público saudável e URL registrada |
+| Alta | Validar fluxo principal na URL pública | Grupo | Concluído | Login, dashboard e transação aprovados na URL |
 | Média | Registrar proposta de monetização | Grupo | Concluído | Receita, custos, equilíbrio, riscos e premissas |
 | Média | Gravar vídeo/apresentação final | Grupo | Pendente da equipe | Vídeo revisado seguindo o roteiro |
 | Média | Anexar link do vídeo no README | Grupo | Pendente da equipe | Link acessível ao avaliador |

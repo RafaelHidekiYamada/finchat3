@@ -1,6 +1,6 @@
 # 1. FinChat CP3 — Aplicação Financeira Pronta para Validação e Deploy
 
-Projeto acadêmico: **Checkpoint 3 (CP3)**. Aplicação full stack para organizar finanças pessoais e empresariais, com backend FastAPI, frontend React, dashboard consolidado, análise via Ollama local com fallback determinístico, ambiente Docker completo, testes e preparação de deploy. Banco/Open Finance e WhatsApp continuam simulados e nenhuma credencial bancária é armazenada.
+Projeto acadêmico: **Checkpoint 3 (CP3)**. Aplicação full stack para organizar finanças pessoais e empresariais, com backend FastAPI, frontend React, dashboard consolidado, análise via Ollama local com fallback determinístico, ambiente Docker completo, testes e deploy público validado no Render. Banco/Open Finance e WhatsApp continuam simulados e nenhuma credencial bancária é armazenada.
 
 ## 2. Descrição
 
@@ -43,7 +43,7 @@ Uma API autenticada concentra os registros e regras de negócio. O dashboard for
 - Inicialização de container com migrations, seed opcional, porta validada e healthchecks.
 - Cabeçalhos básicos de segurança na API e no frontend.
 - Cenários HTTP reais, testes CP3, evidências reproduzíveis e inspeção visual responsiva.
-- Blueprint Render para API Docker, frontend estático e PostgreSQL.
+- Blueprint Render aplicado para API Docker e frontend estático públicos.
 - Documentos de diagnóstico, testes, Docker, deploy, monetização, backlog e apresentação.
 
 ## 7. Evolução e escopo futuro
@@ -52,10 +52,10 @@ Uma API autenticada concentra os registros e regras de negócio. O dashboard for
 | --- | --- |
 | CP1 — preservado | Backend, banco, API REST, regras, autenticação, simulações, testes e Swagger. |
 | CP2 — preservado | Frontend, dashboard real, API otimizada, banco revisado, testes e análise via LLM local. |
-| CP3 — esta entrega | Qualidade, Docker completo, Ollama validado, segurança básica, preparação de deploy, monetização e documentação final. |
+| CP3 — esta entrega | Qualidade, Docker completo, Ollama validado, segurança básica, deploy público, monetização e documentação final. |
 | Futuro | Integrações oficiais com consentimento, notificações, observabilidade e operação pública contínua. |
 
-Credenciais bancárias, verificações de webhook, autorização do titular e integrações externas reais permanecem fora do escopo. A análise do CP3 não exige chave nem serviço de IA pago. O deploy público está preparado, mas não foi executado porque esta versão ainda não deve ser enviada ao GitHub.
+Credenciais bancárias, verificações de webhook, autorização do titular e integrações externas reais permanecem fora do escopo. A análise do CP3 não exige chave nem serviço de IA pago. O deploy público usa regras determinísticas e está disponível pelos links da seção 23.
 
 ## 8. Regras de negócio
 
@@ -100,7 +100,7 @@ Detalhamento: [regras de negócio](docs/regras_de_negocio.md).
 | Vitest e Testing Library | Testes básicos do frontend |
 | Docker e Docker Compose | Ambiente integrado da API, frontend, Ollama e modelo |
 | Nginx sem privilégios | Servidor do frontend e proxy reverso de `/api/` |
-| Render Blueprint | Preparação de deploy da API, frontend e PostgreSQL |
+| Render Blueprint | Deploy público da API Docker e frontend estático |
 
 As dependências estão em [requirements.txt](requirements.txt). [requirements-lock.txt](requirements-lock.txt) registra as versões exatas verificadas em Python 3.11 no Windows e no container Linux. A execução local e a suíte usam SQLite; o suporte a PostgreSQL é configurável, mas não equivale a uma validação contra uma instância PostgreSQL real.
 
@@ -127,7 +127,7 @@ finchat/
 ├── scripts/docker_start.py # Migrations e inicialização no container
 ├── Dockerfile
 ├── compose.yaml
-├── render.yaml           # Blueprint do deploy planejado
+├── render.yaml           # Blueprint aplicado no Render
 ├── .dockerignore
 ├── .env.example
 ├── .gitignore
@@ -556,11 +556,16 @@ Sugestão de colunas e cartões do CP2: [docs/trello_notion_cp2.md](docs/trello_
 
 As evidências ficam em `evidencias/testes/`, `evidencias/docker/` e `evidencias/deploy/`. Elas não contêm `.env`, JWTs ou chaves privadas.
 
-## 23. Estado do deploy
+## 23. Deploy público
 
-O arquivo `render.yaml` prepara API Docker, frontend estático e PostgreSQL no Render. **A aplicação ainda não está publicada:** a versão CP3 permanece local por solicitação de não enviar nada ao GitHub. As URLs previstas retornaram `404` e não são apresentadas como deploy concluído.
+- Aplicação: <https://finchat-cp3.onrender.com>
+- API: <https://finchat-cp3-api.onrender.com>
+- Health check: <https://finchat-cp3-api.onrender.com/health>
+- Repositório: <https://github.com/RafaelHidekiYamada/finchat3>
 
-Quando houver autorização, o procedimento está em [CP3_DEPLOY.md](docs/CP3_DEPLOY.md). O ambiente público inicial usa análise determinística; Ollama permanece na execução Docker local.
+O Blueprint `finchat-cp3` foi aplicado e os dois serviços aparecem como `Deployed`. Login, dashboard, CRUD temporário, autorização CPF/CNPJ e análise determinística foram validados nas URLs públicas. O plano gratuito permite apenas um PostgreSQL ativo por workspace; como o limite já estava ocupado, esta demonstração usa SQLite efêmero em `/tmp`. Reinícios podem recriar os dados fictícios pelo seed. Ollama permanece na execução Docker local.
+
+Procedimento e limitações: [CP3_DEPLOY.md](docs/CP3_DEPLOY.md).
 
 ## 24. Monetização resumida
 
@@ -570,6 +575,7 @@ A hipótese utiliza planos Gratuito, Pessoal (R$ 19,90/mês) e Negócio (R$ 59,9
 
 - Roteiro: [CP3_APRESENTACAO.md](docs/CP3_APRESENTACAO.md)
 - Vídeo: **pendente de gravação pela equipe**
+- Deploy: <https://finchat-cp3.onrender.com>
 - Trello: <https://trello.com/b/v6yK2Ik4/ruizstartup>
 - Repositório: <https://github.com/RafaelHidekiYamada/finchat3>
 - Pacote local: `CP3_FINCHAT_GRUPO_PROVISORIO.zip`
@@ -577,8 +583,8 @@ A hipótese utiliza planos Gratuito, Pessoal (R$ 19,90/mês) e Negócio (R$ 59,9
 ## 26. Limitações conhecidas
 
 - Open Finance e WhatsApp são simulações; não há consentimento ou mensagem real.
-- O deploy público está configurado, mas ainda não foi executado ou validado.
+- O plano gratuito pode suspender a API por inatividade e usa banco SQLite efêmero nesta demonstração.
 - O plano gratuito de hospedagem não representa disponibilidade de produção.
 - Ollama exige recursos locais e pode demorar no primeiro carregamento.
 - O fallback oferece orientação educacional, não aconselhamento financeiro profissional.
-- PostgreSQL está configurado para deploy, enquanto a validação local principal usa SQLite.
+- PostgreSQL continua suportado por configuração, mas não é usado no deploy acadêmico gratuito devido ao limite do workspace.

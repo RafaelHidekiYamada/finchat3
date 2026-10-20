@@ -1,13 +1,11 @@
 # Evidência de deploy
 
-Em 18/10/2026, as URLs antecipadas pelo `render.yaml` foram consultadas e responderam `404`, conforme `verificacao_urls.json`.
+Em 20/10/2026, o Blueprint `finchat-cp3` foi aplicado no Render. A API Docker e o frontend estático aparecem como `Deployed`.
 
-Isso comprova somente que **não existe deploy público validado nesses endereços**. Como a versão CP3 permanece local por solicitação do usuário, nenhum serviço foi criado e nenhuma alegação de publicação foi feita.
+- Frontend: `https://finchat-cp3.onrender.com`
+- API: `https://finchat-cp3-api.onrender.com`
+- Health: `https://finchat-cp3-api.onrender.com/health`
 
-Depois de autorizado o envio ao repositório e aplicado o Blueprint, esta pasta deve receber:
+`verificacao_urls.json` registra HTTP 200. `validacao_publica.json` registra os cenários reais executados contra a API pública. A inspeção em navegador controlável confirmou login e dashboard com os dados do seed.
 
-- URL real do frontend e da API;
-- resposta de `/health`;
-- captura do login/dashboard público;
-- data/hora e resultado do fluxo principal;
-- eventuais ajustes de CORS e nomes atribuídos pelo Render.
+A primeira tentativa de Blueprint falhou porque o workspace já tinha um banco PostgreSQL gratuito ativo. O deploy final usa SQLite efêmero e seed idempotente, sem contratar serviço pago.

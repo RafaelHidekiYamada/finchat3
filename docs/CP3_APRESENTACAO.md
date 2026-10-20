@@ -12,7 +12,7 @@ Pessoas e pequenos negócios precisam visualizar saldo, receitas, despesas, parc
 
 ## 3. Arquitetura — 45 s
 
-Mostrar brevemente: React/Nginx → FastAPI/JWT → serviços/repositórios → SQLite local ou PostgreSQL público. O Ollama roda localmente; se indisponível, regras determinísticas mantêm a análise funcionando.
+Mostrar brevemente: React estático → FastAPI/JWT → serviços/repositórios → SQLite. O Docker local também inclui Nginx e Ollama; no Render gratuito, regras determinísticas mantêm a análise funcionando e o SQLite é efêmero.
 
 ## 4. Ambiente reproduzível — 45 s
 
@@ -37,7 +37,7 @@ Apresentar o resultado: 96 testes backend, 3 testes frontend, build aprovado, au
 
 ## 8. Deploy — 30 s
 
-Mostrar `render.yaml` e explicar a arquitetura preparada. Se a URL ainda não estiver publicada, declarar isso objetivamente. Não simular nem apresentar localhost como link público.
+Abrir `https://finchat-cp3.onrender.com`, mostrar o Blueprint aplicado e explicar a API Docker e o frontend estático. Destacar a limitação do banco efêmero no plano acadêmico gratuito.
 
 ## 9. Monetização — 45 s
 
@@ -45,7 +45,7 @@ Apresentar planos Gratuito, Pessoal e Negócio, cenário de receita, custos esti
 
 ## 10. Limitações e próximos passos — 30 s
 
-Open Finance e WhatsApp são simulados; Ollama público não está incluído; o plano gratuito de deploy tem limitações; vídeo e publicação dependem da equipe. Próximos passos: publicar branch, validar URL, atualizar evidências e testar preço.
+Open Finance e WhatsApp são simulados; Ollama público não está incluído; o plano gratuito pode suspender a API e recriar o banco efêmero. Próximos passos: banco persistente, vídeo final e teste de preço.
 
 ## 11. Encerramento — 15 s
 
@@ -55,5 +55,5 @@ Destacar que a entrega é reproduzível, testada, documentada e honesta sobre o 
 
 - Se o Ollama estiver carregando, demonstre o fallback e mostre a evidência do teste real já registrado.
 - Se Docker falhar, use as evidências e explique como reproduzir.
-- Se o deploy não estiver disponível, mostre o Blueprint e declare a pendência.
+- Se o serviço gratuito estiver retomando após inatividade, aguarde o health check e use as evidências públicas registradas.
 - Nunca exponha `JWT_SECRET_KEY`, `.env` ou um token completo na gravação.
